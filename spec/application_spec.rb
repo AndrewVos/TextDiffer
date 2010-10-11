@@ -36,7 +36,7 @@ describe "TextDiffer" do
     end
     
     it "renders the diffed text" do
-      last_response.body.should include @diffed_text
+      last_response.body.should include %{<div>#{@diffed_text}</div>}
     end
     
     it "renders the left text" do
