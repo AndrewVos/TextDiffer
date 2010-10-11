@@ -26,25 +26,60 @@ describe "TextDiffer" do
   end
 
   describe "POST /" do
-    before :each do
-      @left = "hello theeerre!"
-      @right = "and now for something completely different"
-      
-      Differ.format = :html
-      @diffed_text = Differ.diff(@left, @right).to_s
-      post "/", {:left => @left, :right => @right}
+    context "with single line left and right text" do
+      before :each do
+        @left = "hello theeerre!"
+        @right = "and now for something completely different"
+
+        Differ.format = :html
+        @diffed_text = Differ.diff(@left, @right).to_s
+        post "/", {:left => @left, :right => @right}
+      end
+
+      it "renders the diffed text" do
+        last_response.body.should include %{<div>#{@diffed_text}</div>}
+      end
+
+      it "renders the left text" do
+        last_response.body.should include %{<textarea name="left">#{@left}</textarea>}
+      end
+
+      it "renders the right text" do
+        last_response.body.should include %{<textarea name="right">#{@right}</textarea>}
+      end
     end
-    
-    it "renders the diffed text" do
-      last_response.body.should include %{<div>#{@diffed_text}</div>}
-    end
-    
-    it "renders the left text" do
-      last_response.body.should include %{<textarea name="left">#{@left}</textarea>}
-    end
-    
-    it "renders the right text" do
-      last_response.body.should include %{<textarea name="right">#{@right}</textarea>}
+
+    context "with multiline left and right text" do
+      context "unix style line breaks" do
+        before :each do
+          @left = "hello theeerre!\nthis goes on a new line!"
+          @right = "and now for something completely different\nand this goes on another new line"
+
+          Differ.format = :html
+          @diffed_text = Differ.diff(@left, @right).to_s
+          post "/", {:left => @left, :right => @right}
+        end
+        it "renders the diffed text with all line breaks replaced with <br />" do
+          line_break_text = @diffed_text.gsub("\n", "<br />")
+          last_response.body.should include %{<div>#{line_break_text}</div>}
+        end
+
+      end
+      context "windows style line breaks" do
+        before :each do
+          @left = "hello theeerre!\r\nthis goes on a new line!"
+          @right = "and now for something completely different\r\nand this goes on another new line"
+
+          Differ.format = :html
+          @diffed_text = Differ.diff(@left, @right).to_s
+          post "/", {:left => @left, :right => @right}
+        end
+
+        it "renders the diffed text with all line breaks replaced with <br />" do
+          line_break_text = @diffed_text.gsub("\r", "").gsub("\n", "<br />")
+          last_response.body.should include %{<div>#{line_break_text}</div>}
+        end
+      end
     end
   end
 end
