@@ -14,6 +14,7 @@ TextDiffer = {
         TextDiffer.left_text_area.bind("textchange", TextDiffer.onTextChange);
         TextDiffer.right_text_area.bind("textchange", TextDiffer.onTextChange);
     },
+
     onTextChange: function() {
         clearTimeout(this.textchange_timeout);
         this.textchange_timeout = setTimeout(function() {
@@ -21,6 +22,7 @@ TextDiffer = {
         },
         1000);
     },
+
     toggleTextAreas: function() {
         TextDiffer.left_result.toggle();
         TextDiffer.right_result.toggle();
