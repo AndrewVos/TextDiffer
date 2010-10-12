@@ -16,8 +16,8 @@ TextDiffer = {
     },
 
     onTextChange: function() {
-        clearTimeout(this.textchange_timeout);
-        this.textchange_timeout = setTimeout(function() {
+        clearTimeout(TextDiffer.textchange_timeout);
+        TextDiffer.textchange_timeout = setTimeout(function() {
             TextDiffer.postText();
         },
         1000);
@@ -36,9 +36,6 @@ TextDiffer = {
             right: TextDiffer.right_text_area.val()
         },
         function(data) {
-            //dataObject = eval(data);
-            //left.text(dataObject.left);
-            //right.text(dataObject.right);
             TextDiffer.toggleTextAreas();
         });
     }
