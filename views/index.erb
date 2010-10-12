@@ -3,4 +3,31 @@
 	<textarea name="right"><%= right if defined?(right) %></textarea>
 	<input type="submit" value="Diff"></input>
 	<div><%= result if defined?(result) %></div>
-</form>
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var timeout;
+
+		$("#left, #right").bind("textchange", function(event, previousText)
+		{
+			clearTimeout(timeout);
+			timeout = setTimeout(function () {
+				alert("saved!")
+				}, 1000);
+			});
+		});
+		</script>
+
+
+
+		<div id="frame_container">
+			<div id="left_frame">
+				<div id="left" contenteditable>
+				</div>
+			</div>
+			<div id="right_frame">
+				<div id="right" contenteditable>
+				</div>
+			</div>
+		</div>
+	</form>

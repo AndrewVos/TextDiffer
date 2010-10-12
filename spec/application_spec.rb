@@ -59,12 +59,13 @@ describe "TextDiffer" do
           @diffed_text = Differ.diff(@left, @right).to_s
           post "/", {:left => @left, :right => @right}
         end
+        
         it "renders the diffed text with all line breaks replaced with <br />" do
           line_break_text = @diffed_text.gsub("\n", "<br />")
           last_response.body.should include %{<div>#{line_break_text}</div>}
         end
-
       end
+      
       context "windows style line breaks" do
         before :each do
           @left = "hello theeerre!\r\nthis goes on a new line!"
