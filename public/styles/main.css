@@ -1,54 +1,42 @@
-*
-{
+* {
 	margin: 0;
 }
 
-body
-{
+body {
 	font-family: Nobile;
 }
 
-h1
-{
+h1 {
 	margin-top: 20px;
 	text-align: center;
 }
 
-div#frame_container
-{
+#frame_container {
 	margin-top: 20px;
 	margin-left: 20px;
 	margin-right: 20px;
 	height: 100%;
 }
 
-div#left_frame, div#right_frame
-{
+#left_frame, #right_frame {
 	width: 50%;
 }
 
-div#left_frame
-{
+#left_frame {
 	float: left;
 }
 
-div#right_frame
-{
+#right_frame {
 	float: right;
 }
 
-div#left, div#right
-{
+#left_result, #right_result {
 	height: 100%;
 	min-height: 100px;
-	border: 1px solid black;	
+	border: 1px solid ;
 }
 
-div#left
-{
-	margin-right: 10px;
-}
-div#right
-{
-	margin-left: 10px;	
+#left_text_area, #right_text_area {
+	min-height: 100px;
+	width: 100%;
 }

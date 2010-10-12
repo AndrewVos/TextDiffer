@@ -7,5 +7,5 @@ get "/?" do
 end
 
 post "/?" do
-  
+  puts params[:left]
 end
