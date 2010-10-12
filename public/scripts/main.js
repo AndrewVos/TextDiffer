@@ -5,8 +5,13 @@ $(document).ready(function() {
     function(event, previousText) {
         clearTimeout(textchange_timeout);
         textchange_timeout = setTimeout(function() {
-            alert("saved!")
+            postText();
         },
         1000);
     });
 });
+
+function postText() {
+    var left = $("#left").text();
+    var right = $("#right").text();
+}
