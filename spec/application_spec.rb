@@ -53,6 +53,7 @@ describe "TextDiffer" do
       it "should replace the line breaks with html breaks and the spaces with non-breaking spaces" do
         @left = @left.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
         @right = @right.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
+
         expected_response = {:left => @left, :right => @right}.to_json
         last_response.body.should == expected_response
       end
