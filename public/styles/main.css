@@ -1,37 +1,31 @@
-*{
-	margin: 0;
-	padding: 0;
-}
-
-div #frame_container
+*{margin: 0;}
+div#frame_container
 {
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
+	margin-top: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
 	height: 100%;
 }
 
 div#left_frame, div#right_frame
 {
-	position: absolute;
 	width: 50%;
 }
 
 div#left_frame
 {
-	left: 0;
-	width: 50%;
+	float: left;
 }
 
 div#right_frame
 {
-	right: 0;
+	float: right;
 }
 
 div#left, div#right
 {
-	border: 1px solid black;
 	width: 100%;
 	height: 100%;
 	min-height: 100px;
+	border: 1px solid black;	
 }
