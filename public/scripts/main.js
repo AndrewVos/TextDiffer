@@ -36,8 +36,11 @@ TextDiffer = {
             right: TextDiffer.right_text_area.val()
         },
         function(data) {
+            var dataObject = eval(data);
+            TextDiffer.left_result.html(dataObject.left);
+            TextDiffer.right_result.html(dataObject.right);
             TextDiffer.toggleTextAreas();
-        });
+        }, "json");
     }
 };
 
