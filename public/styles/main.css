@@ -40,3 +40,12 @@ h1 {
 	min-height: 100px;
 	width: 100%;
 }
+
+span.change
+{
+	background-color: #A6C2E0;
+}
+span.add
+{
+	background-color: #FEB1C3;
+}

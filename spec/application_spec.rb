@@ -51,12 +51,60 @@ describe "TextDiffer" do
       end
 
       it "should replace the line breaks with html breaks and the spaces with non-breaking spaces" do
-        @left = @left.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
-        @right = @right.gsub("\n", "<br/>").gsub(" ", "&nbsp;")
-
-        expected_response = {:left => @left, :right => @right}.to_json
+        expected_response = {
+          :left => "Line&nbsp;breaks<br/>and&nbsp;spaces!",
+           :right => "Line&nbsp;breaks<br/>and&nbsp;spaces!"
+          }.to_json
         last_response.body.should == expected_response
       end
+    end
+
+    context "with left that contains one more character than right" do
+      before :each do
+        @left = "hello"
+        @right = "hell"
+        post "/", {:left => @left , :right => @right}
+      end
+
+      it "should respond with missing items highlighted in html" do
+        expected_response = {
+          :left => %{hell<span class="add">o</span>},
+          :right => "hell"
+        }.to_json
+        last_response.body.should == expected_response
+      end
+    end
+    
+    context "with right that contains one more character than left" do
+      before :each do
+        @left = "hell"
+        @right = "hello"
+        post "/", {:left => @left , :right => @right}
+      end
+      
+      it "should respond with missing items highlighted in html" do
+        expected_response = {
+          :left => "hell",
+          :right => %{hell<span class="add">o</span>}
+        }.to_json
+        last_response.body.should == expected_response
+      end
+    end
+    
+    context "with right that contains one single difference" do
+      before :each do
+        @left = "hallo"
+        @right = "hello"
+        post "/", {:left => @left , :right => @right}
+      end
+      
+      it "should respond with missing items highlighted in html" do
+        expected_response = {
+          :left => %{h<span class="change">a</span>llo},
+          :right => %{h<span class="change">e</span>llo}
+        }.to_json
+        last_response.body.should == expected_response
+      end 
     end
   end
 end
