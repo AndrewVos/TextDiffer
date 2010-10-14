@@ -106,5 +106,21 @@ describe "TextDiffer" do
         last_response.body.should == expected_response
       end 
     end
+    
+    context "with equal left and right that contain html characters" do
+      before :each do
+        @left = "<html>"
+        @right = "<html>"
+        post "/", {:left => @left , :right => @right}
+      end
+      
+      it "should respond with missing items highlighted in html" do
+        expected_response = {
+          :left => %{&lt;html&gt;},
+          :right => %{&lt;html&gt;}
+        }.to_json
+        last_response.body.should == expected_response
+      end
+    end
   end
 end

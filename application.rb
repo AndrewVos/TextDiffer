@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'diff/lcs'
 require 'json'
+require 'htmlentities'
 
 get "/?" do
   erb :index
@@ -17,10 +18,8 @@ post "/?" do
   right_html = ""
 
   Diff::LCS::sdiff(left, right).each do |change|
-    old_element = ""
-    new_element = ""
-    old_element = change.old_element.gsub("\n", "<br/>").gsub(" ", "&nbsp;") if change.old_element != nil
-    new_element = change.new_element.gsub("\n", "<br/>").gsub(" ", "&nbsp;") if change.new_element != nil
+    old_element = encode_html(change.old_element)
+    new_element = encode_html(change.new_element)
     
     if change.action == "+"
       right_html += %{<span class="add">#{new_element}</span>}  
@@ -34,15 +33,15 @@ post "/?" do
       right_html += new_element
     end
   end
-
-  #left_html = encode_html(left_html)
-  #right_html = encode_html(right_html)
-
+  
   {:left => left_html, :right => right_html}.to_json
 end
 
 def encode_html(text)
+  text = "" if text == nil
+  
+  text = HTMLEntities.new.encode(text)  
+  text = text.gsub(" ", "&nbsp;")
   text = text.gsub("\n", "<br/>")
-  text = text.gsub("  ", "&nbsp;&nbsp;")
   text
 end
