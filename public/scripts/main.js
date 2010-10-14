@@ -13,6 +13,14 @@ TextDiffer = {
         TextDiffer.right_result.click(TextDiffer.toggleTextAreas);
         TextDiffer.left_text_area.bind("textchange", TextDiffer.onTextChange);
         TextDiffer.right_text_area.bind("textchange", TextDiffer.onTextChange);
+
+        $("#diff").click(function()
+        {
+	TextDiffer.toggleTextAreas();
+            TextDiffer.postText();
+        });
+
+
     },
 
     onTextChange: function() {
@@ -40,7 +48,8 @@ TextDiffer = {
             TextDiffer.left_result.html(dataObject.left);
             TextDiffer.right_result.html(dataObject.right);
             TextDiffer.toggleTextAreas();
-        }, "json");
+        },
+        "json");
     }
 };
 

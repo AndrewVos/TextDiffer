@@ -2,6 +2,8 @@ $: << File.expand_path(File.join(File.dirname(__FILE__), ".."))
 require 'application'
 require 'spec'
 require 'rack/test'
+set :environment, :test
+
 
 describe "TextDiffer" do
   include Rack::Test::Methods
@@ -66,10 +68,10 @@ describe "TextDiffer" do
         post "/", {:left => @left , :right => @right}
       end
 
-      it "should respond with missing items highlighted in html" do
+      it "should respond with the differences in html" do
         expected_response = {
-          :left => %{hell<span class="add">o</span>},
-          :right => "hell"
+          :left => %{hell<span class="change">o</span>},
+          :right => %{hell<span class="change">&nbsp;</span>}
         }.to_json
         last_response.body.should == expected_response
       end
@@ -82,10 +84,10 @@ describe "TextDiffer" do
         post "/", {:left => @left , :right => @right}
       end
       
-      it "should respond with missing items highlighted in html" do
+      it "should respond with the differences in html" do
         expected_response = {
-          :left => "hell",
-          :right => %{hell<span class="add">o</span>}
+          :left => %{hell<span class="change">&nbsp;</span>},
+          :right => %{hell<span class="change">o</span>}
         }.to_json
         last_response.body.should == expected_response
       end
@@ -98,7 +100,7 @@ describe "TextDiffer" do
         post "/", {:left => @left , :right => @right}
       end
       
-      it "should respond with missing items highlighted in html" do
+      it "should respond with the differences in html" do
         expected_response = {
           :left => %{h<span class="change">a</span>llo},
           :right => %{h<span class="change">e</span>llo}
@@ -114,10 +116,26 @@ describe "TextDiffer" do
         post "/", {:left => @left , :right => @right}
       end
       
-      it "should respond with missing items highlighted in html" do
+      it "should respond with the differences in html" do
         expected_response = {
           :left => %{&lt;html&gt;},
           :right => %{&lt;html&gt;}
+        }.to_json
+        last_response.body.should == expected_response
+      end
+    end
+    
+    context "with left and right that contain a different amount of lines" do
+      before :each do
+        @left = "1\n2\n3"
+        @right = "1\n2"
+        post "/", {:left => @left , :right => @right}
+      end
+      
+      it "should respond with the differences in html" do
+        expected_response = {
+          :left => %{1<br/>2<br/><span class="change">3</span>},
+          :right => %{1<br/>2<br/><span class="change">&nbsp;</span>}
         }.to_json
         last_response.body.should == expected_response
       end
