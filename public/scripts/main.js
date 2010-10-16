@@ -1,41 +1,33 @@
 TextDiffer = {
-    textchange_timeout: null,
-
     initialize: function() {
         TextDiffer.left_result = $("#left_result");
         TextDiffer.right_result = $("#right_result");
         TextDiffer.left_text_area = $("#left_text_area");
         TextDiffer.right_text_area = $("#right_text_area");
+        TextDiffer.diff = $("#diff");
+        TextDiffer.edit = $("#edit");
 
+        TextDiffer.showTextAreas();
+        TextDiffer.diff.click(TextDiffer.postText);
+        TextDiffer.edit.click(TextDiffer.showTextAreas)
+    },
+
+    showTextAreas: function() {
         TextDiffer.left_result.hide();
         TextDiffer.right_result.hide();
-        TextDiffer.left_result.click(TextDiffer.toggleTextAreas);
-        TextDiffer.right_result.click(TextDiffer.toggleTextAreas);
-        TextDiffer.left_text_area.bind("textchange", TextDiffer.onTextChange);
-        TextDiffer.right_text_area.bind("textchange", TextDiffer.onTextChange);
-
-        $("#diff").click(function()
-        {
-	TextDiffer.toggleTextAreas();
-            TextDiffer.postText();
-        });
-
-
+        TextDiffer.left_text_area.show();
+        TextDiffer.right_text_area.show();
+        TextDiffer.diff.show();
+        TextDiffer.edit.hide();
     },
 
-    onTextChange: function() {
-        clearTimeout(TextDiffer.textchange_timeout);
-        TextDiffer.textchange_timeout = setTimeout(function() {
-            TextDiffer.postText();
-        },
-        1000);
-    },
-
-    toggleTextAreas: function() {
-        TextDiffer.left_result.toggle();
-        TextDiffer.right_result.toggle();
-        TextDiffer.left_text_area.toggle();
-        TextDiffer.right_text_area.toggle();
+    hideTextAreas: function() {
+        TextDiffer.left_result.show();
+        TextDiffer.right_result.show();
+        TextDiffer.left_text_area.hide();
+        TextDiffer.right_text_area.hide();
+        TextDiffer.diff.hide();
+        TextDiffer.edit.show();
     },
 
     postText: function() {
@@ -47,7 +39,7 @@ TextDiffer = {
             var dataObject = eval(data);
             TextDiffer.left_result.html(dataObject.left);
             TextDiffer.right_result.html(dataObject.right);
-            TextDiffer.toggleTextAreas();
+            TextDiffer.hideTextAreas();
         },
         "json");
     }
